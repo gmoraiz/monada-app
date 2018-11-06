@@ -1,0 +1,97 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/theming/
+
+// Font path is used to include ionicons,
+// roboto, and noto sans fonts
+$font-path: "../assets/fonts";
+
+// The app direction is used to include
+// rtl styles in your app. For more info, please see:
+// http://ionicframework.com/docs/theming/rtl-support/
+$app-direction: ltr;
+
+@import "ionic.globals";
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/theming/overriding-ionic-variables/
+
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+  primary:    #488aff,
+  secondary:  #32db64,
+  danger:     #f53d3d,
+  light:      #f4f4f4,
+  dark:       #222,
+  brown1: #29221A, 
+  brown2: #473E28,
+  brown3: #867446,
+  white: #FFF,
+  grey:#60646B
+);
+
+// App iOS Variables
+// App Material Design Variables
+// App Windows Variables
+
+// App Theme
+@import "ionic.theme.default";
+// Ionicons
+// http://ionicframework.com/docs/ionicons/
+@import "ionicons";
+// Fonts
+// --------------------------------------------------
+@import "roboto";
+@import "noto-sans";
+
+//SUBSCRIBE
+$toolbar-background: map-get($colors, brown1);
+$tabs-background:map-get($colors, brown1);
+$tabs-ios-tab-icon-color:map-get($colors, light);
+$tabs-md-tab-icon-color:map-get($colors, light);
+$tabs-ios-tab-icon-color-active:map-get($colors, brown3);
+$tabs-md-tab-icon-color-active:map-get($colors, brown3);
+
+$text-input-md-highlight-color-invalid: map-get($colors, brown3);
+$text-input-md-highlight-color-valid: map-get($colors, brown3);
+$text-input-md-show-invalid-highlight: map-get($colors, brown3);
+$text-input-md-highlight-color: map-get($colors, brown3);
+$text-input-md-show-valid-highlight: map-get($colors, brown3);
+
+$alert-ios-button-text-color: map-get($colors, brown3);
+$alert-md-button-text-color: map-get($colors, brown3);
+$alert-ios-checkbox-background-color-on: map-get($colors, brown3);
+$alert-md-checkbox-border-color-on: map-get($colors, brown3);
+$alert-ios-checkbox-border-color-on: map-get($colors, brown3);
+$alert-md-checkbox-border-color-off: map-get($colors, brown3);
+$alert-ios-checkbox-border-color-off: map-get($colors, brown3);
+$action-sheet-ios-button-text-color: map-get($colors, brown3);
+
+$picker-ios-button-text-color:map-get($colors, brown3);
+$picker-md-button-text-color:map-get($colors, brown3);
+$picker-md-option-selected-color:map-get($colors, brown3);
+
+// $toast-md-background: map-get($colors, brown1);
+
+$infinite-scroll-loading-color: map-get($colors, brown3);
+$refresher-icon-color: map-get($colors, brown3);
+$refresher-text-color: map-get($colors, brown3);
+
+$searchbar-ios-toolbar-input-background: rgba(255,255,255,1);
+
+$list-md-header-font-size:1.8rem;
+$list-md-header-margin-bottom:0;
+
+$spinner-ios-ios-color: map-get($colors, brown3);
+$spinner-md-crescent-color:map-get($colors, brown3);

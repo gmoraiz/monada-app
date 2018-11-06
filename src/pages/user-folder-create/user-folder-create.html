@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon item-left name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{editMode ? "Edite sua pasta" : "Crie uma pasta"}}</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only [disabled]="!folderForm.valid" (click)="editMode ? update() : store()">
+        <ion-icon item-right name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div id="folder-image">
+          <img [src]="photo" onError="src = 'assets/imgs/not-image-user.jpg'" (click)="helper.openPhoto(photo)"/>
+          <button ion-button (click)="optionsPhoto()">
+            <ion-icon item-right name="camera"></ion-icon>
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <form [formGroup]="folderForm" (ngSubmit)="store()">
+    <ion-item>
+      <ion-label floating>Nome</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <div class="form-validation" *ngIf="!folderForm.controls.name.valid && folderForm.controls.name.touched">
+      <p class="error" *ngIf="folderForm.controls.name.errors !== null && folderForm.controls.name.errors.maxlength">O nome não pode exceder 100 caracteres</p>
+      <p class="error" *ngIf="folderForm.controls.name.errors !== null && folderForm.controls.name.errors.required">O nome é necessário</p>
+    </div>
+  </form>
+  <button *ngIf="editMode" margin-top ion-button round outline block color="danger" (click)="delete()">Deletar</button>
+</ion-content>

@@ -1,0 +1,7 @@
+<ion-list no-margin>
+  <button ion-item *ngIf="isMe"  (click)="edit()">Editar</button>
+  <button ion-item *ngIf="isMe"  (click)="delete()">Deletar</button>
+  <button ion-item *ngIf="!isMe" (click)="helper.emailReport('Denuncia da postagem ('+publication.id+') do usuario '+ publication.author.username+' ('+publication.author.userId+')')">Denunciar</button>
+  <button ion-item *ngIf="!isMe && !publication.blocked" (click)="block()">Bloquear</button>
+  <button ion-item *ngIf="!isMe && publication.blocked" (click)="unblock()">Desbloquear</button>
+</ion-list>

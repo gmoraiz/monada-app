@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar [hidden]="!users.length" id="authors-toolbar-x">
+      <ion-scroll #usersScrollbarX scrollX="true" id="authors-scrollbar-x">
+        <ion-grid>
+          <ion-row nowrap>
+            <ion-col col-auto *ngFor="let user of users">
+              <div class="author-block">
+                <img [src]="user.image">
+                <span class="usernameTutorialUsers">{{user.username}}</span>
+                <div (click)="deleteUser(user)">
+                  <button ion-button clear icon-only>
+                    <ion-icon name="remove-circle"></ion-icon>
+                  </button>
+                </div>
+              </div>
+            </ion-col>
+            <span #finalUsersScrollbarX></span>
+          </ion-row>
+        </ion-grid>
+      </ion-scroll>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="register-page">
+  <ion-slides pager (ionSlideWillChange)="slideChanged()">
+    <ion-slide>
+      <ion-content>
+        <!--<ion-searchbar placeholder="Pesquise aqui..." (ionInput)="getUsers($event.target.value)"></ion-searchbar>-->
+        <ion-grid id="slide-one">
+          <ion-row>
+            <ion-col>
+              <h5>Seu cadastro foi finalizado!</h5>
+              <p>Sugerimos alguns usuários para que você receba as publicações</p>
+              <button ion-button round outline icon-end color="brown3">Selecione-os ao seu bel-prazer e deslize para prosseguir
+                <ion-icon name="fastforward"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-6 col-md-4 col-xl-3 *ngFor="let user of searchUsers" (tap)="setUser(user)">
+              <div class="suggestion-wrapper" [style.background-image]="'url('+user.image+')'" [class.card-selected]="user.selected">
+                <span>{{user.name}}</span>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-content>
+    </ion-slide>
+
+    <ion-slide class="slide-center" id="slide-two">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <img src="assets/imgs/people-start.png"/>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <h2 class="slide-title">Estás pronto?</h2>
+            <p>Vamos lá, <b>sem desvio de informação!</b></p>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <button ion-button round icon-only (click)="openHome()">
+              <ion-icon name="arrow-forward"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

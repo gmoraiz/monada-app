@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon item-left name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Pastas</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only [disabled]="false" (click)="openFolderCreate()">
+        <ion-icon item-right name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding [hidden]="!loadingFolders">
+    <div class="loading-spinner-centered">
+      <ion-spinner></ion-spinner>
+    </div>
+</ion-content>
+
+<ion-content no-padding [hidden]="loadingFolders">
+  <div *ngIf="!loadingFolders && !folders.length" text-center>
+    <p id="label-publication-notfound" margin>
+      Você ainda não possui nenhuma pasta.
+      Criando pastas você pode organizar suas publicações de modo a facilitar o encontro e disposição delas.
+    </p>
+    <button ion-button center icon-start outline color="brown3" (click)="openFolderCreate()">
+      <ion-icon name="folder-open"></ion-icon>
+      Minha primeira pasta!
+    </button>
+  </div>
+
+  <ion-list>
+    <button ion-item *ngFor="let folder of folders" (tap)="selectMode ? dismiss(folder) : open(folder)">
+      <ion-thumbnail item-start>
+        <img [src]="folder.image" onError="src = 'assets/imgs/not-image.png'">
+      </ion-thumbnail>
+      <h2>{{folder.name}}</h2>
+      <!--<button ion-button clear item-end>View</button>-->
+    </button>
+  </ion-list>
+</ion-content>

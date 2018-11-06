@@ -1,0 +1,22 @@
+page-first-access {
+    $brown1: #29221A;
+    $brown2:#473E28;
+    $brown3:#867446;
+    $light: #f4f4f4;
+    $white: #FFF;
+    ion-content{
+        background-color:$brown1!important;
+    }
+    ion-grid{
+        position: relative;
+        transform: translate(0px, -50%);
+        top: 50%;
+    }
+    button{
+        width: 100%!important;
+        margin: 0 auto!important;
+    }
+    ion-row{
+        margin-bottom:25px;
+    }
+}

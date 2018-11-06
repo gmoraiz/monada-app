@@ -1,0 +1,138 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon item-left name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>{{editMode ? 'Edite sua publicação' : 'Nova publicação'}}</ion-title>
+    <ion-buttons right>
+      <button *ngIf="editMode" ion-button icon-only (click)="delete()">
+        <ion-icon item-right name="trash"></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="editMode ? edit() : store()">
+        <ion-icon item-right name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content no-padding>
+  <ion-item id="title">
+    <ion-textarea placeholder="Título" text-center rows="1" autosize
+    [(ngModel)]="publication.title" 
+    (paste)="titleValidatorSize($event)" 
+    (keypress)="titleValidatorSize($event)"
+    (keydown.enter)="$event.preventDefault()"></ion-textarea>
+  </ion-item>
+  <div *ngIf="publication.categories.length" class="categories" no-wrap>
+    <ion-badge *ngFor="let category of publication.categories" (tap)="removeCategory(category)">
+      {{category.name}}
+      <ion-icon ios="md-close" md="md-close" icon-end small></ion-icon>
+    </ion-badge>
+  </div>
+  <ion-item id="description">
+    <ion-textarea #description [(ngModel)]="publication.description" placeholder="Desejas publicar o quê?" rows="1" autosize></ion-textarea>
+  </ion-item>
+  <button ion-button icon-start clear color="brown2" id="btn-category" (click)="openCategory()">
+    <ion-icon ios="ios-add-circle-outline" md="md-add-circle"></ion-icon>
+    Categoria
+  </button>
+  <button *ngIf="publication.folder.id" ion-button no-padding icon-start clear color="brown2" id="btn-folder-selected" (click)="folderOptions()">
+    <ion-icon *ngIf="!publication.folder.image" name="folder"></ion-icon>
+    <div *ngIf="publication.folder.image" [style.background-image]="'url('+publication.folder.image+')'"></div>
+    {{publication.folder.name}}
+  </button>
+
+  <ion-grid [hidden]="!publication.images.length" no-padding id="publication-images">
+    <ion-row>
+      <ion-col [attr.col-12] = "publication.images.length == 1 ? '' : null"
+               [attr.col-6]  = "publication.images.length == 2 ? '' : null"
+               [attr.col-4]  = "publication.images.length == 3 ? '' : null"
+               [attr.col-3]  = "publication.images.length == 4 ? '' : null"
+               [attr.col]    = "publication.images.length == 5 ? '' : null"
+               *ngFor="let image of publication.images">
+        <div [style.background-image]="'url('+(image.name || image.nameToUpload)+')'" (tap)="helper.openPhoto(image.name || image.nameToUpload)">
+          <button ion-button *ngIf="image.success == undefined" (tap)="removeImage(image)" color="brown3">
+            <ion-icon item-right name="trash"></ion-icon>
+          </button>
+          <button ion-button *ngIf="image.success === true" color="secondary">
+            <ion-icon item-right name="checkmark"></ion-icon>
+          </button>
+          <button ion-button *ngIf="image.success === false" color="danger">
+            <ion-icon item-right name="close"></ion-icon>
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid [hidden]="!publication.link.url || publication.link.vimeo || publication.link.youtube" no-padding id="publication-link">
+    <img [src]="publication.link?.image" onError="src = 'assets/imgs/not-image.png'"/>
+    <div (click)="helper.openLink(publication.link.url)">
+      <p *ngIf="publication.link.title != ''"><b>{{publication.link.title}}</b></p>
+      <p *ngIf="publication.link.description != ''">{{publication.link.description}}</p>
+      <p><ion-icon name="link" icon-start></ion-icon>{{publication.link?.url}}</p>
+    </div>
+    <button ion-button round icon-only class="close-link" (click)="closeLink()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-grid>
+
+  <ion-grid *ngIf="publication.link.youtube || publication.link.vimeo" no-padding id="publication-video">
+    <iframe class="publication-frame" *ngIf="publication.link.youtube"
+      [src]="publication.link.youtube | link" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen>
+    </iframe>
+    <iframe class="publication-frame" *ngIf="publication.link.vimeo"
+      [src]="publication.link.vimeo | link" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen>
+    </iframe>
+    <button ion-button round icon-only class="close-link" (click)="closeLink()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+  </ion-grid>
+</ion-content>
+
+<ion-footer no-border>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row [@linkSearchAnimation] *ngIf="linkOpen" id="link-search">
+        <ion-col col-12>
+          <ion-item>
+            <ion-input no-padding placeholder="Insira o link"
+            [(ngModel)]="searchLink" 
+            (ionBlur)="getMetatag()"
+            (keydown.enter)="getMetatag()">
+            </ion-input>
+            <button *ngIf="!searchingLink" ion-button item-right icon-only outline>
+              <ion-icon name="search"></ion-icon>
+            </button>
+            <ion-spinner item-right *ngIf="searchingLink" class="input-spinner"></ion-spinner>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    <ion-row id="options">
+      <ion-col col-3>
+        <button ion-button icon-only outline (click)="openFolders()">
+          <ion-icon name="folder-open"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button icon-only outline (click)="linkOpen ? setLinkOpen(false) : setLinkOpen()">
+          <ion-icon name="link"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button icon-only outline (click)="getCamera()">
+          <ion-icon name="camera"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-3>
+        <button ion-button icon-only outline (click)="getGallery()">
+          <ion-icon name="images"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

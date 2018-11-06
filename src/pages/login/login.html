@@ -1,0 +1,34 @@
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <div id="logoHappy"></div>
+    </ion-row>
+    <form [formGroup]="user" (ngSubmit)="login()">
+      <ion-row>
+        <ion-item>
+          <ion-label floating>Email/Usuário</ion-label>
+          <ion-input type="email" formControlName="email"></ion-input>
+        </ion-item>
+      </ion-row>
+      <ion-row>
+        <ion-item>
+          <ion-label floating>Senha</ion-label>
+          <ion-input type="password" formControlName="password" clearOnEdit="false"></ion-input>
+        </ion-item>
+      </ion-row>
+      <ion-row>
+        <button ion-button round outline color="brown3" type="submit" id="enter" [disabled]="!user.valid">Entrar</button>
+      </ion-row>
+    </form>
+    <ion-row>
+      <button ion-button color="light" clear (click)="openRegister()">Não possuo cadastro</button>
+    </ion-row>
+    <ion-row>
+      <button ion-button color="light" clear (click)="resetPassword()">Esqueci minha senha</button>
+    </ion-row>
+  </ion-grid>
+  <p id="version">
+    monada v{{constant.VERSION}}
+    <b>Totus tuus Mariae <img src="assets/imgs/deusvult.png"/></b>
+  </p>
+</ion-content>

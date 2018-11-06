@@ -1,0 +1,21 @@
+page-search {
+    $grey: #60646B;
+    $red: #f53d3d;
+    $brown1: #29221A;
+    $brown2:#473E28;
+    $brown3:#867446;
+    $light: #f4f4f4;
+    $white: #FFF;
+    .toolbar .searchbar-ios .searchbar-input{
+        background:$white!important;
+    }
+
+    #label-highlights{
+        text-align: center;
+        margin: 0;
+        color: $brown2;
+        font-weight: bold;
+        font-size:16px;
+    }
+
+}

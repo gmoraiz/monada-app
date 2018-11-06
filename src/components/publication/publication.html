@@ -1,0 +1,76 @@
+<ion-card class="publication" *ngIf="!publication.removed">
+      <ion-item class="header">
+        <ion-avatar item-start (click)="openProfile(publication.author)">
+          <img [src]="publication.author.image" onError="src = 'assets/imgs/not-image-user.jpg'">
+        </ion-avatar>
+        <h2 (click)="openProfile(publication.author)">{{publication.author.name}}</h2>
+        <p (click)="openProfile(publication.author)">{{publication.author.username}}</p>
+        <p class="publication-date" (click)="openPublication(publication)">{{publication.date | publicationDate}}</p>
+        <button ion-button clear icon-only item-end *ngIf="showBlocked" (click)="showBlocked = false" color="danger">
+          <ion-icon name="close"></ion-icon>
+        </button>
+        <button ion-button clear icon-only item-end (click)="options(publication, publication.author.userId == user.userId, $event)" color="brown1">
+          <ion-icon name="more"></ion-icon>
+        </button>
+      </ion-item>
+    
+    <div *ngIf="!publication.blocked || showBlocked">
+      <div class="publication-categories" no-wrap>
+        <ion-badge *ngFor="let category of publication.categories">{{category.name}}</ion-badge>
+      </div>
+
+      <ion-card-content *ngIf="publication.title || publication.description">
+        <p text-center *ngIf="publication.title" class="publication-title"  (click)="openPublication(publication)"><b>{{publication.title}}</b></p>
+        <p class="publication-description" *ngIf="publication.description"  (click)="openPublication(publication)">{{!opened ? (publication.description | truncate : 800 : "...") : publication.description}}<span class="btn-truncate" [hidden]="publication.description.length <= 800 || opened">[mais]</span></p>
+      </ion-card-content>
+      
+      <ion-slides *ngIf="publication.images.length" autoplay="3000" speed="1500" loop="true" pager="true">
+        <ion-slide *ngFor="let image of publication.images" (click)="helper.openPhoto(image.name)" class="publication-slide">
+          <img [src]="image.name"/>
+        </ion-slide>
+      </ion-slides>
+
+      <div *ngIf="publication.link.url && (!publication.link.youtube && !publication.link.vimeo)" (click)="helper.openLink(publication.link.url)" class="publication-site">
+        <img [src]="publication.link?.image" onError="src = 'assets/imgs/not-image.png'"/>
+        <div>
+          <p *ngIf="publication.link.title !== ''"><b>{{publication.link.title}}</b></p>
+          <p *ngIf="publication.link.description != ''">{{publication.link.description}}</p>
+          <!-- <p *ngIf="publication.link.description != ''" [innerHTML]="publication.link.description | linkify"></p> -->
+          <p><ion-icon name="link" icon-start></ion-icon>{{publication.link?.url}}</p>
+        </div>
+      </div>
+
+      <iframe class="publication-frame" *ngIf="publication.link.youtube" [src]=" publication.link.youtube | link" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+      <iframe class="publication-frame" *ngIf="publication.link.vimeo" [src]=" publication.link.vimeo | link" frameborder="0" allowfullscreen webkitallowfullscreen mozallowfullscreen></iframe>
+
+      <ion-row>
+        <ion-col class="col-center">
+          <button ion-button icon-start clear small (click)="openLiked()">
+            <div class="publication-like">{{publication.likes}} Curtidas</div>
+          </button>
+        </ion-col>
+        <ion-col col-2 no-padding>
+          <button ion-button icon-only clear (click)="likeAction(publication)">
+            <ion-icon *ngIf="!publication.likeAction" name="thumbs-up" [ngClass]="publication.liked ? 'publication-btn' : 'publication-btn-unused'"></ion-icon>
+            <ion-spinner class="spinner-action" *ngIf="publication.likeAction"></ion-spinner>
+          </button>
+        </ion-col>
+        <ion-col col-2 no-padding *ngIf="publication.author.userId != user.userId">
+          <button ion-button icon-only clear (click)="saveAction(publication)">
+            <ion-icon *ngIf="!publication.saveAction" name="bookmark" [ngClass]="publication.saved ? 'publication-btn' : 'publication-btn-unused'"></ion-icon>
+            <ion-spinner class="spinner-action" *ngIf="publication.saveAction"></ion-spinner>
+          </button>
+        </ion-col>
+        <ion-col col-2 no-padding>
+          <button ion-button icon-only clear (click)="sharePublication(publication)">
+            <ion-icon name="share-alt" class="publication-btn"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <div *ngIf="publication.blocked && !showBlocked" class="card-blocked">
+      <p>Tu bloqueastes esta publicação. Podes visualiza-la, desta vez, <b (click)="showBlockedDialog()">clicando aqui!</b></p>
+    </div>
+
+</ion-card>

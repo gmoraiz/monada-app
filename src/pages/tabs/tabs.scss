@@ -1,0 +1,49 @@
+page-tabs{
+    $grey: #60646B;
+    $red: #f53d3d;
+    $brown1: #29221A;
+    $brown2:#473E28;
+    $brown3:#867446;
+    $light: #f4f4f4;
+    $white: #FFF;
+
+    .toast-ios,.toast-md {
+        .toast-wrapper {
+            &.toast-bottom {
+                bottom: 46px;
+            }
+        }
+    }
+
+    .tab-icon-user{
+        object-fit: cover;
+        margin: 0 auto;
+        border-radius: 50%;
+    }
+
+    .tab-button[aria-selected=true]{
+        .tab-icon-user{
+            box-shadow: 0 0 0px 2px $brown3 !important;
+        }
+    }
+
+    .tab-button[aria-selected=false]{
+        .tab-icon-user{
+            box-shadow: 0 0 0px 2px $light !important;
+        }
+    }
+
+    .tabs-md{
+        .tab-icon-user{
+            width: 2.4rem;
+            height: 2.4rem;
+        }
+    }
+    
+    .tabs-ios{
+        .tab-icon-user{
+            width: 30px;
+            height: 30px;
+        }
+    }
+}

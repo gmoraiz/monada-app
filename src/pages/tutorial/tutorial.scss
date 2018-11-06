@@ -1,0 +1,111 @@
+page-tutorial{
+    $grey: #60646B;
+    $red: #f53d3d;
+    $brown1: #29221A;
+    $brown2:#473E28;
+    $brown3:#867446;
+    $light: #f4f4f4;
+    $white: #FFF;
+
+    .usernameTutorialUsers{
+        color:$light!important;
+    }
+    .register-page{
+        .toolbar-background {
+            background: #fff;
+            border-color: transparent;
+        }
+        .slide-zoom {
+            height: 100%;
+        }
+        .slide-title {
+            margin-top: 2.8rem;
+        }
+        b {
+            font-weight: 500;
+        }
+        p {
+            font-size: 14px;
+            line-height: 1.5;
+            color:$grey;
+            b {
+            color: #000000;
+            }
+        }
+        .slide-center .slide-zoom{
+            display: flex;
+            align-items: center;
+        }
+        #slide-one{
+            h5{
+                color: $grey;
+                margin-bottom:0px;
+            }
+            img{
+                margin: 0;
+                opacity:0.8;
+            }
+            p{
+                margin:0px;
+                b{
+                    color:$brown3;
+                    font-size:12px;
+                }
+            }
+            button{
+                height: auto!important;
+                white-space: normal!important;
+                font-size:12px!important;
+                line-height: 15px!important;
+                padding-top:1px;
+                padding-bottom:1px;
+            }
+        }
+        ion-list ion-avatar img{
+            object-fit: cover;
+        }
+        #slide-two{
+            button{
+                background-color: $brown1;
+                height: 50px;
+                width: 50px;
+                border-radius: 50%;
+            }
+            img{
+                max-width: 60%;
+                margin: 0;
+                opacity:0.8;
+            }
+        }
+    }
+
+    .suggestion-wrapper{
+        width: 100%;
+        padding-top: 100%;
+        position: relative;
+        background-size: cover;
+        background-position:center;
+        background-color:$brown2;
+        border-radius:5px;
+        span{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 17px;
+            width: 100%;
+            padding:0px 2px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px #222;
+            text-align:center;
+        }
+    }
+
+    .card-selected{
+        // -webkit-box-shadow: 0px 0px 10px 1px rgba(71,62,40,1);
+        // -moz-box-shadow: 0px 0px 10px 1px rgba(71,62,40,1);
+        // box-shadow: 0px 0px 10px 1px rgba(71,62,40,1);
+        border: 1px solid #473e28;
+    }
+}

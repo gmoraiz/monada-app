@@ -1,0 +1,117 @@
+<ion-menu [content]="content" type="overlay">
+  <ion-header no-border>
+    <ion-toolbar no-border>
+      <div id="menu-header">
+        <img src="assets/imgs/logo-brown3.png"/>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-grid>
+      <!-- <ion-row *ngIf="constant.plt.is('ios')">
+        <button menuClose ion-button round outline color="brown3" (click)="helper.openLink('https://patreon.com/user?u=13626733')">Patreon</button>
+      </ion-row> -->
+      <!-- <ion-row>
+        <button menuClose ion-button round outline color="brown3" (click)="helper.openLink(constant.URL + 'doacao')">Doação com PayPal</button>
+      </ion-row> -->
+      <ion-row *ngIf="!constant.plt.is('ios')">
+        <button menuClose ion-button round outline color="brown3" (click)="helper.openLink(constant.URL + 'doacao')">Contribua</button>
+      </ion-row>
+      <ion-row>
+        <button menuClose ion-button round outline color="brown3" (click)="openContact()">Contate-nos</button>
+      </ion-row>
+      <ion-row>
+        <button menuClose ion-button round outline color="brown3" (click)="shareApp()">Compartilhe!</button>
+      </ion-row>
+      <ion-row *ngIf="constant.plt.is('ios')">
+        <button menuClose ion-button round outline color="brown3" (click)="helper.openLink('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')">Contrato de licença</button>
+      </ion-row>
+      <ion-row>
+        <button menuClose ion-button round outline color="brown3" (click)="logout()">Sair</button>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+  <ion-footer>
+    <ion-toolbar>
+      <p id="version">
+        monada v{{constant.VERSION}}
+        <b>Totus tuus Mariae <img src="assets/imgs/deusvult.png"/></b>
+      </p>
+    </ion-toolbar>
+  </ion-footer>
+</ion-menu>
+
+<ion-nav id="nav" #content [root]="HomePage"></ion-nav>
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title> {{actualAuthor.username == 'all' ? 'Todas as publicações' : actualAuthor.username}}</ion-title>
+    <!--<ion-buttons end>
+      <button ion-button icon-only (click)="openSearch()">
+        <ion-icon name="search"></ion-icon>
+      </button>
+    </ion-buttons>-->
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher (ionRefresh)="doRefresh($event)" [enabled]="!loadingPublications">
+    <ion-refresher-content
+      pullingText="Atualize as publicações"
+      refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+  <div>
+  </div>
+  <ion-toolbar  id="authors-toolbar-x">
+      <ion-scroll #AuthorsScrollbarX scrollX="true" id="authors-scrollbar-x">
+        <ion-grid>
+          <ion-row nowrap>
+            <ion-col col-auto>
+              <div class="author-block" (click)="showPublications(allAuthors.id, allAuthors.username)">
+                <img src="assets/imgs/people-all.png">
+                <span>Todos</span>
+              </div>
+            </ion-col>
+            <ion-col col-auto *ngIf="authors.length == 0">
+              <div class="author-block" (click)="openAuthors()">
+                <img src="assets/imgs/add.png">
+                <span>Novo</span>
+              </div>
+            </ion-col>
+            <ion-col col-auto *ngFor="let author of authors">
+              <div class="author-block" (click)="showPublications(author.authorId, author.username)" (press)="optionsStatus(author, $event)">
+                <img [class.author-selected]="author.selected" [src]="author.image" onError="src = 'assets/imgs/not-image-user.jpg'">
+                <span>{{author.username}}</span>
+                <div>
+                  <ion-badge [hidden]="!author.badge">{{author.badge}}</ion-badge>
+                </div>
+              </div>
+            </ion-col>
+            <span #finalAuthorsScrollbarX></span>
+          </ion-row>
+        </ion-grid>
+      </ion-scroll>
+  </ion-toolbar>
+
+  <hr class="no-margin-bottom">
+
+  <p id="label-publication-notfound" margin-top *ngIf="!loadingPublications && !publications.length">Nenhuma publicação foi encontrada</p>
+
+  <ion-spinner margin-top *ngIf="loadingPublications" class="center-spinner"></ion-spinner>
+  <div *ngIf="!loadingPublications">
+    <publication *ngFor="let publication of publications" [publication]="publication"></publication>
+  </div>
+
+  <ion-fab right bottom *ngIf="user.authorId">
+    <button ion-fab color="brown3" (click)="openPublicationCreate()"><ion-icon name="create"></ion-icon></button>
+  </ion-fab>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+  
+</ion-content>

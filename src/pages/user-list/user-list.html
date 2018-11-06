@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon item-left name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title *ngIf="filter.type == this.constant.userListEnum.FOLLOWERS && !notMe">Seguiram-te</ion-title>
+    <ion-title *ngIf="filter.type == this.constant.userListEnum.FOLLOWERS && notMe">Seguiram-no</ion-title>
+    <ion-title *ngIf="filter.type == this.constant.userListEnum.FOLLOWING">Quem você segue</ion-title>
+    <ion-title *ngIf="filter.type == this.constant.userListEnum.LIKED">Curtiram sua publicação</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding [hidden]="!loadingUsers">
+    <div class="loading-spinner-centered">
+      <ion-spinner></ion-spinner>
+    </div>
+</ion-content>
+
+<ion-content [hidden]="loadingUsers">
+  <p id="label-publication-notfound" margin-top *ngIf="!loadingUsers && !users.length">Nenhuma usuário foi encontrado</p>
+  <ion-list>
+    <button ion-item *ngFor="let user of users" (click)="openProfile(user)">
+      <ion-avatar item-start>
+        <img [src]="user.image" class="img-center" onError="src = 'assets/imgs/not-image-user.jpg'">
+      </ion-avatar>
+      <h2 (click)="openProfile(author)">{{user.name}} {{user.userId == me.userId ? "(Você)" : ""}}</h2>
+      <p (click)="openProfile(author)">{{user.username}}</p>
+    </button>
+  </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)"> 
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

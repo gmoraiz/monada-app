@@ -1,0 +1,83 @@
+<ion-header>
+  <!--<ion-navbar no-border-bottom>
+    <ion-searchbar placeholder="Digite aqui..." (ionInput)="teste()"></ion-searchbar>
+  </ion-navbar>-->
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="actualSegment" color="light" (ionChange)="segmentChanged()">
+      <ion-segment-button value="highlights">
+        Destaques
+      </ion-segment-button>
+      <ion-segment-button value="search">
+        Buscar
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div [ngSwitch]="actualSegment">
+    <ion-grid *ngSwitchCase="'search'" id="search-wrapper">
+      <ion-item>
+        <ion-input type="text" placeholder="Termo a ser buscado" [(ngModel)]="filter.term"></ion-input>
+      </ion-item>
+      <div *ngIf="filter.advancedSearch" [@enterAnimation]>
+      <ion-item>
+        <ion-input type="text" placeholder="Especificar um usuário" [(ngModel)]="filter.user"></ion-input>
+      </ion-item>
+      <ion-row>
+        <ion-item>
+          <ion-label class="correct-label">Categorias</ion-label>
+          <ion-select [(ngModel)]="filter.category" multiple="true" okText="Confirmar" cancelText="Cancelar">
+            <ion-option value="1">Bacon</ion-option>
+            <ion-option value="2">Black Olives</ion-option>
+            <ion-option value="3">Extra Cheese</ion-option>
+            <ion-option value="4">Mushrooms</ion-option>
+            <ion-option value="5">Pepperoni</ion-option>
+            <ion-option value="6">Sausage</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-row>
+      <ion-row>
+        <ion-col col-6>
+          <ion-item>
+            <ion-label class="correct-label">De</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="filter.since" doneText="Confirmar" cancelText="Cancelar"></ion-datetime>
+          </ion-item>
+        </ion-col>
+        <ion-col col-6>
+          <ion-item>
+            <ion-label>Até</ion-label>
+            <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="filter.until"></ion-datetime>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      </div>
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button round outline icon-start color="brown3" type="submit" (click)="search()">
+            <ion-icon name="search"></ion-icon>
+            Pesquisar
+          </button>
+        </ion-col>
+        <ion-col col-6>
+          <button ion-button round outline icon-start color="brown3" (click)="filter.advancedSearch ? filter.advancedSearch = false : filter.advancedSearch = true">
+            <ion-icon *ngIf="!filter.advancedSearch" name="options"></ion-icon>
+            <ion-icon *ngIf="filter.advancedSearch" name="close"></ion-icon>
+            {{filter.advancedSearch ? "Menos Opções" : "Mais Opções"}}
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  <p id="label-publication-notfound" margin-top *ngIf="!loadingPublications && !publications.length">Nenhuma publicação foi encontrada</p>
+
+  <ion-spinner margin-top *ngIf="loadingPublications" class="center-spinner" color="brown3"></ion-spinner>
+  
+  <div *ngIf="!loadingPublications">
+    <publication *ngFor="let publication of publications" [publication]="publication"></publication>
+  </div>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)" color="brown3"> 
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+</ion-content>

@@ -1,0 +1,98 @@
+<ion-grid id="profile">
+    <ion-row>
+      <ion-col text-center col-4>
+        <img id="user-image" [src]="user.image" class="img-center" onError="src = 'assets/imgs/not-image-user.jpg'" (click)="helper.openPhoto(user.image)"/>
+      </ion-col>
+      <ion-col>
+        <ion-row id="profile-name">
+          <p color="brown3">{{user.name}}</p>
+        </ion-row>
+        <ion-row *ngIf="user.authorId" id="profile-informations">
+          <ion-col col-4>
+            <button color="brown2" ion-button icon-start clear>
+              <ion-icon name="book"></ion-icon>
+              <span class="wrap">{{user.publications}}</span>
+            </button>
+          </ion-col>
+          <ion-col col-4>
+            <button color="brown2" ion-button icon-start clear (click)="openFollowers()">
+              <ion-icon name="people"></ion-icon>
+              <span class="wrap">{{user.followers}}</span>
+             </button>
+          </ion-col>
+          <ion-col col-4>
+            <button color="brown2" ion-button icon-start clear>
+              <ion-icon name="thumbs-up"></ion-icon>
+              <span class="wrap">{{user.likes}}</span>
+            </button>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!user.authorId" id="profile-informations">
+          <ion-col col-12>
+            <button color="brown2" ion-button icon-start clear>
+              <ion-icon name="people"></ion-icon>
+              <span class="wrap">{{user.following}}</span>
+            </button>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngIf="!me" id="profile-actions">
+          <button *ngIf="!user.blocked" ion-button outline round icon-start color="brown2" (click)="followAction()">
+            <ion-icon *ngIf="!user.followAction" name="person" color="brown2"></ion-icon>
+            <span *ngIf="!user.followAction">{{user.followed ? 'Seguindo' : 'Seguir'}}</span>
+            <ion-spinner *ngIf="user.followAction" color="brown2"></ion-spinner>
+          </button>
+          <button *ngIf="user.blocked" ion-button outline round color="brown2">
+            <span>Bloqueado</span>
+          </button>
+          <button ion-button only-icon round outline color="brown2" *ngIf="user.followed" (click)="muteAction()">
+            <ion-icon *ngIf="!user.muteAction" [name]="user.muted ? 'notifications' : 'notifications-off'" name="notifications" color="brown2"></ion-icon>
+            <ion-spinner *ngIf="user.muteAction" class="small-spinner"></ion-spinner>
+          </button>
+        </ion-row>
+        <ion-row *ngIf="me" id="profile-actions">
+          <button ion-button outline round icon-start color="brown2" (click)="openEdit()">
+            <ion-icon name="create" color="brown2"></ion-icon>
+            <span>Editar</span>
+          </button>
+          <button *ngIf="!user.authorId" ion-button only-icon round outline color="brown2" (click)="openInvite()">
+            <ion-icon name="key" color="brown2"></ion-icon>
+          </button>
+        </ion-row>
+      </ion-col>
+    </ion-row>
+    <ion-row id="bio">
+      <p>{{user.bio}}</p>
+    </ion-row>
+    <ion-row style="justify-content: center;">
+      <ion-col col-2 no-padding text-center [hidden]="!user.site" (click)="openSocialMedia(user.site)">
+        <button ion-button icon-only clear>
+          <ion-icon name="globe" color="brown3"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-2 no-padding text-center [hidden]="user.gab == null || user.gab == ''" (click)="openSocialMedia('https://gab.com/' + user.gab)">
+        <button ion-button icon-only clear>
+          <ion-icon name="monada-gab" color="brown3"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-2 no-padding text-center [hidden]="user.youtube == null || user.youtube == ''" (click)="openSocialMedia('https://youtube.com/' + user.youtube)">
+        <button ion-button icon-only clear>
+          <ion-icon ios="logo-youtube" md="logo-youtube" color="brown3"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-2 no-padding text-center [hidden]="user.facebook == null || user.facebook == ''" (click)="openSocialMedia('https://facebook.com/' + user.facebook)">
+        <button ion-button icon-only clear>
+          <ion-icon ios="logo-facebook" md="logo-facebook" color="brown3"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-2 no-padding text-center [hidden]="user.instagram == null || user.instagram == ''" (click)="openSocialMedia('https://instagram.com/' + user.instagram)">
+        <button ion-button icon-only clear>
+          <ion-icon ios="logo-instagram" md="logo-instagram" color="brown3"></ion-icon>
+        </button>
+      </ion-col>
+      <ion-col col-2 no-padding text-center [hidden]="user.twitter == null || user.twitter == ''" (click)="openSocialMedia('https://twitter.com/' + user.twitter)">
+        <button ion-button icon-only clear>
+          <ion-icon ios="logo-twitter" md="logo-twitter" color="brown3"></ion-icon>
+        </button>
+      </ion-col>
+    </ion-row>
+</ion-grid>

@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{folder.name}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content no-padding>
+      <div>
+        <button *ngIf="publicationsData.length" ion-button icon-end clear color="grey" id="btn-filter" (click)="openedSearch ? setOpenedSearch(false) : setOpenedSearch()">
+          {{openedSearch ? "Encerrar filtragem" : "Filtrar"}}
+          <ion-icon *ngIf="!openedSearch" name="funnel"></ion-icon>
+          <ion-icon *ngIf="openedSearch"  name="close"></ion-icon>
+        </button>
+        <ion-grid *ngIf="openedSearch" id="search-wrapper" [@enterAnimation]>
+          <ion-item>
+            <ion-input type="text" placeholder="Termo a ser buscado" [(ngModel)]="filter.term"></ion-input>
+          </ion-item>
+          <ion-row>
+            <ion-item>
+              <ion-label class="correct-label">Categorias</ion-label>
+              <ion-select [(ngModel)]="filter.category" multiple="true" okText="Confirmar" cancelText="Cancelar">
+                <ion-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-option>
+              </ion-select>
+            </ion-item>
+          </ion-row>
+          <ion-row>
+            <ion-col col-6>
+              <ion-item>
+                <ion-label class="correct-label">De</ion-label>
+                <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="filter.since" doneText="Confirmar" cancelText="Cancelar"></ion-datetime>
+              </ion-item>
+            </ion-col>
+            <ion-col col-6>
+              <ion-item>
+                <ion-label>Até</ion-label>
+                <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="filter.until"></ion-datetime>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col col-12>
+              <button ion-button round outline icon-start color="brown3" type="submit" (click)="search()">
+                <ion-icon name="search"></ion-icon>
+                Pesquisar
+              </button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <p id="label-publication-notfound" margin-top *ngIf="!loadingPublications && !publications.length">Nenhuma publicação foi encontrada</p>
+        <ion-spinner margin-top *ngIf="loadingPublications" class="center-spinner"></ion-spinner>
+        <publication [hidden]="loadingPublications" *ngFor="let publication of publications" [publication]="publication"></publication>
+      </div>
+</ion-content>

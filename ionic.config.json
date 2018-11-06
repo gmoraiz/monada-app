@@ -1,0 +1,8 @@
+{
+  "name": "monada",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "pro_id": "faf63af0"
+}

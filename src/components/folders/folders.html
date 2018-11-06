@@ -1,0 +1,9 @@
+<ion-grid>
+  <ion-row>
+    <ion-col col-6 col-md-4 col-xl-3 *ngFor="let folder of folders" (click)="openFolder(folder)">
+      <div class="folder-wrapper" [style.background-image]="'url('+folder.image+')'">
+        <span>{{folder.name}}</span>
+      </div>
+    </ion-col>
+  </ion-row>
+</ion-grid>

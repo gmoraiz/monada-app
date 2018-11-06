@@ -1,0 +1,31 @@
+<ion-header no-border>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon item-left name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title></ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content fullscreen padding>
+  <ion-grid>
+    <h5 text-center>Possuis o convite de autor? Insira-o e torne-se um autor de contéudo.</h5>
+    <form [formGroup]="user" (ngSubmit)="give()">
+      <ion-item>
+        <ion-input type="text" formControlName="invite"></ion-input>
+        <ion-icon item-right color="secondary" class="valid" *ngIf="user.controls.invite.valid && user.controls.invite.value != ''" name="checkmark"></ion-icon>
+        <ion-spinner item-right *ngIf="user.controls.invite.pending && user.controls.invite.value != ''" class="input-spinner"></ion-spinner>
+      </ion-item>
+      <div class="form-validation" *ngIf="user.controls.invite.errors !== null && !user.controls.invite.valid">
+        <p class="error" *ngIf="user.controls.invite.errors.checkInvite">Convite inválido</p>
+      </div>
+      <button ion-button round outline color="brown3" type="submit" [disabled]="!user.valid">Confirmar</button>
+    </form>
+    <ion-row>
+      <button ion-button color="light" clear (click)="solicitInvite()">Não possuo, mas desejo-o!</button>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

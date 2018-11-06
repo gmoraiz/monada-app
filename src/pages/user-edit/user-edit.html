@@ -1,0 +1,132 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon item-left name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Edite o seu perfil</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only [disabled]="!userEdit.valid" (click)="edit()">
+        <ion-icon item-right name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div id="user-image">
+          <img [src]="photo ? photo : (user.image)" onError="src = 'assets/imgs/not-image-user.jpg'" (click)="helper.openPhoto(user.image)"/>
+          <button ion-button (click)="optionsPhoto()">
+            <ion-icon item-right name="camera"></ion-icon>
+          </button>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <form [formGroup]="userEdit">
+    <ion-item>
+      <ion-label floating>Nome completo</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <div class="form-validation" *ngIf="!userEdit.controls.name.valid && userEdit.controls.name.touched">
+      <p class="error" *ngIf="userEdit.controls.name.errors !== null && userEdit.controls.name.errors.pattern">O nome necessita somente de letras</p>
+      <p class="error" *ngIf="userEdit.controls.name.errors !== null && userEdit.controls.name.errors.maxlength">O nome não pode exceder 40 caracteres</p>
+      <p class="error" *ngIf="userEdit.controls.name.errors !== null && userEdit.controls.name.errors.required">O nome é necessário</p>
+    </div>
+
+    <ion-item>
+      <ion-label floating>Usuário</ion-label>
+      <ion-input type="text" formControlName="username"></ion-input>
+      <ion-spinner item-right *ngIf="userEdit.controls.username.pending" class="input-spinner"></ion-spinner>
+    </ion-item>
+    <div class="form-validation" *ngIf="!userEdit.controls.username.valid">
+      <p class="error"   *ngIf="userEdit.controls.username.errors !== null && userEdit.controls.username.errors.pattern">O usuário aceita somente letras, numeros e _</p>
+      <p class="error"   *ngIf="userEdit.controls.username.errors !== null && userEdit.controls.username.errors.maxlength">O usuário não pode exceder 20 caracteres</p>
+      <p class="error"   *ngIf="userEdit.controls.username.errors !== null && userEdit.controls.username.errors.required">O usuário é necessário</p>
+      <p class="error"   *ngIf="userEdit.controls.username.errors !== null && userEdit.controls.username.errors.checkUsername">Este usuário já está em uso</p>
+    </div>
+
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="email" formControlName="email" (ionChange)="teste()"></ion-input>
+      <ion-spinner item-right *ngIf="userEdit.controls.email.pending" class="input-spinner"></ion-spinner>
+    </ion-item>
+    <div class="form-validation" *ngIf="!userEdit.controls.email.valid && userEdit.controls.email.touched">
+      <p class="error" *ngIf="userEdit.controls.email.errors !== null && userEdit.controls.email.errors.required">O email é necessário</p>
+      <p class="error" *ngIf="userEdit.controls.email.errors !== null && userEdit.controls.email.errors.pattern">Digite um email válido</p>
+      <p class="error" *ngIf="userEdit.controls.email.errors !== null && userEdit.controls.email.errors.maxlength">O email não pode exceder 191 caracteres</p>
+      <p class="error" *ngIf="userEdit.controls.email.errors !== null && userEdit.controls.email.errors.checkEmail">Este email já está em uso</p>
+    </div>
+    <div *ngIf="user.authorId">
+    <ion-item>
+      <ion-label stacked>Biografia</ion-label>
+      <ion-textarea #bio formControlName="bio" (ionBlur)="bioFocus = false" (ionFocus)="bioFocus = true" rows="3" placeholder="Esta pequena biografia aparecerá em seu perfil"></ion-textarea>
+      <span class="count-input" *ngIf="bioFocus" [class.count-exceded]="(191 - bio.value?.length) < 0" item-right>{{(191 - bio.value?.length)}}</span>
+    </ion-item>
+    <!--<div class="form-validation" *ngIf="!userEdit.controls.bio.valid && userEdit.controls.bio.touched">
+      <p class="error" *ngIf="userEdit.controls.bio.errors !== null && userEdit.controls.bio.errors.maxlength">A biografia excedeu o limite</p>
+    </div>-->
+
+    <ion-item>
+      <ion-label><ion-icon icon-left name="globe" color="brown3"></ion-icon></ion-label>
+      <ion-input type="text" placeholder="Seu site" formControlName="site"></ion-input>
+    </ion-item>
+    <div class="form-validation" *ngIf="!userEdit.controls.site.valid && userEdit.controls.site.touched">
+      <p class="error" *ngIf="userEdit.controls.site.errors !== null && userEdit.controls.site.errors.maxlength">O link não pode exceder 191 caracteres</p>
+      <p class="error" *ngIf="userEdit.controls.site.errors !== null && userEdit.controls.site.errors.pattern">Link inválido</p>
+    </div>
+
+    <ion-item>
+      <ion-label><ion-icon icon-left name="monada-gab" color="brown3"></ion-icon><span class="social-media-label">gab.ai/</span></ion-label>
+      <ion-input type="text" placeholder="Usuário" formControlName="gab"></ion-input>
+    </ion-item>
+    <div class="form-validation" *ngIf="!userEdit.controls.gab.valid && userEdit.controls.gab.touched">
+      <p class="error" *ngIf="userEdit.controls.gab.errors !== null && userEdit.controls.gab.errors.maxlength">O link não pode exceder 191 caracteres</p>
+      <p class="error" *ngIf="userEdit.controls.gab.errors !== null && userEdit.controls.gab.errors.pattern">Link inválido</p>
+    </div>
+
+    <ion-item>
+      <ion-label><ion-icon icon-left name="logo-youtube" color="brown3"></ion-icon><span class="social-media-label">youtube.com/</span></ion-label>
+      <ion-input type="text" placeholder="Usuário" formControlName="youtube"></ion-input>
+    </ion-item>
+    <div class="form-validation" *ngIf="!userEdit.controls.youtube.valid && userEdit.controls.youtube.touched">
+      <p class="error" *ngIf="userEdit.controls.youtube.errors !== null && userEdit.controls.youtube.errors.maxlength">O link não pode exceder 191 caracteres</p>
+      <p class="error" *ngIf="userEdit.controls.youtube.errors !== null && userEdit.controls.youtube.errors.pattern">Link inválido</p>
+    </div>
+
+    <ion-item>
+      <ion-label><ion-icon icon-left name="logo-facebook" color="brown3"></ion-icon><span class="social-media-label">facebook.com/</span></ion-label>
+      <ion-input type="text" placeholder="Usuário" formControlName="facebook"></ion-input>
+    </ion-item>
+    <div class="form-validation" *ngIf="!userEdit.controls.facebook.valid && userEdit.controls.facebook.touched">
+      <p class="error" *ngIf="userEdit.controls.facebook.errors !== null && userEdit.controls.facebook.errors.maxlength">O link não pode exceder 191 caracteres</p>
+      <p class="error" *ngIf="userEdit.controls.facebook.errors !== null && userEdit.controls.facebook.errors.pattern">Link inválido</p>
+    </div>
+
+    <ion-item>
+      <ion-label><ion-icon icon-left name="logo-instagram" color="brown3"></ion-icon><span class="social-media-label">instagram.com/</span></ion-label>
+      <ion-input type="text" placeholder="Usuário" formControlName="instagram"></ion-input>
+    </ion-item>
+    <div class="form-validation" *ngIf="!userEdit.controls.instagram.valid && userEdit.controls.instagram.touched">
+      <p class="error" *ngIf="userEdit.controls.instagram.errors !== null && userEdit.controls.instagram.errors.maxlength">O link não pode exceder 191 caracteres</p>
+      <p class="error" *ngIf="userEdit.controls.instagram.errors !== null && userEdit.controls.instagram.errors.pattern">Link inválido</p>
+    </div>
+
+    <ion-item>
+      <ion-label><ion-icon icon-left name="logo-twitter" color="brown3"></ion-icon><span class="social-media-label">twitter.com/</span></ion-label>
+      <ion-input type="text" placeholder="Usuário" formControlName="twitter"></ion-input>
+    </ion-item>
+    <div class="form-validation" *ngIf="!userEdit.controls.twitter.valid && userEdit.controls.twitter.touched">
+      <p class="error" *ngIf="userEdit.controls.twitter.errors !== null && userEdit.controls.twitter.errors.maxlength">O link não pode exceder 191 caracteres</p>
+      <p class="error" *ngIf="userEdit.controls.twitter.errors !== null && userEdit.controls.twitter.errors.pattern">Link inválido</p>
+    </div>
+
+    </div>
+  </form>
+  <button margin-top ion-button round outline block color="brown3" (click)="openEditPassword()">Alterar minha senha</button>
+</ion-content>

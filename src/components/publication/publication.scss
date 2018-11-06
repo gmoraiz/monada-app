@@ -1,0 +1,36 @@
+publication {
+    $grey: #60646B;
+    $red: #f53d3d;
+    $brown1: #29221A;
+    $brown2:#473E28;
+    $brown3:#867446;
+    $light: #f4f4f4;
+    $white: #FFF;
+    $dark:#222;
+
+    .close-blocked{
+        margin: 0 auto;
+        text-align:center;
+        font-weight: bold;
+        color:$red;
+    }
+
+    .card-blocked{
+        position:relative;
+        width:90%;
+        margin: 0 auto;
+        margin-bottom:2%;
+        padding:5px;
+        border-radius:10px;
+        background-color: rgba($red, .1);
+        border: 1px solid rgba($red, .5);
+        text-align:center;
+        p{
+            color:$grey;
+            b{
+                font-weight:$dark;
+            }
+        }
+    }
+
+}

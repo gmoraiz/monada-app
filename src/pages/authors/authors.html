@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-navbar>
+    <ion-searchbar placeholder="Estás procurando algum autor?" [(ngModel)]="filter.name" (ionInput)="search($event.target.value)" debounce="1500"></ion-searchbar>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher [enabled]="actualSegment == 'following'" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingText="Atualize os dados"
+      refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <ion-spinner margin-top *ngIf="loadingAuthors" class="center-spinner" color="brown3"></ion-spinner>
+  
+  <ion-list *ngIf="!loadingAuthors">
+    <ion-list-header>
+      {{actualSegment == 'following' ? 'Seguindo' : 'Resultado da busca'}}
+    </ion-list-header>
+    <div *ngFor="let author of authors">
+      <ion-item [hidden]="actualSegment == 'following' && author.deleted">
+        <ion-avatar item-start (click)="openProfile(author)">
+          <img [src]="author.image" class="img-center" onError="src = 'assets/imgs/not-image-user.jpg'">
+        </ion-avatar>
+        <h2 (click)="openProfile(author)">{{author.name}}</h2>
+        <p (click)="openProfile(author)">{{author.username}}</p>
+        <button *ngIf="actualSegment == 'following'" ion-button icon-only clear item-end color="brown3" (tap)="muteAction(author)">
+          <ion-icon *ngIf="!author.muteAction" [name]="author.muted ? 'notifications' : 'notifications-off'"></ion-icon>
+          <ion-spinner *ngIf="author.muteAction"></ion-spinner>
+        </button>
+        <button *ngIf="actualSegment == 'search' && me.userId == author.userId" ion-button round outline item-end color="brown3">
+          <span>Você</span>
+        </button>
+        <button *ngIf="actualSegment == 'search' && author.blocked" ion-button round outline item-end color="brown3">
+          <span>Bloqueado</span>
+        </button>
+        <button *ngIf="actualSegment == 'search' && me.userId != author.userId && !author.blocked" ion-button round outline item-end color="brown3" (tap)="followAction(author)">
+          <span *ngIf="!author.followAction">{{author.followed ? 'Seguindo' : 'Seguir'}}</span>
+          <ion-spinner *ngIf="author.followAction"></ion-spinner>
+        </button>
+      </ion-item>
+    </div>
+  </ion-list>
+  <p id="label-publication-notfound" margin-top *ngIf="!loadingAuthors && !authors.length">Nenhuma usuário foi encontrado</p>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)"> 
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

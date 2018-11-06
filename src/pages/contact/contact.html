@@ -1,0 +1,30 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button icon-only (click)="dismiss()">
+        <ion-icon item-left name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Contate-nos</ion-title>
+    <ion-buttons right>
+      <button ion-button icon-only [disabled]="!message.valid" (click)="send()">
+        <ion-icon item-right name="send"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <form [formGroup]="message">
+    <ion-item no-padding>
+      <ion-label stacked>Diga-nos algo</ion-label>
+      <ion-textarea autosize formControlName="description" rows="10" placeholder="Retire dúvidas conosco ou envie-nos críticas, sugestões e correções ortográficas. Temos muito trabalho pela frente!"></ion-textarea>
+    </ion-item>
+    <div class="form-validation" *ngIf="!message.controls.description.valid && message.controls.description.touched">
+      <p class="error" *ngIf="message.controls.description.errors !== null && message.controls.description.errors.required">É necessário o corpo da mensagem</p>
+      <p class="error" *ngIf="message.controls.description.errors !== null && message.controls.description.errors.maxlength">A mensagem não pode exceder 1000 caracteres</p>
+    </div>
+  </form>
+</ion-content>
+

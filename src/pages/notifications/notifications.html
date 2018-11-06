@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Notificações</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding [hidden]="!loadingNotifications">
+    <div class="loading-spinner-centered">
+      <ion-spinner></ion-spinner>
+    </div>
+</ion-content>
+
+<ion-content no-padding [hidden]="loadingNotifications">
+
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingText="Atualize as notificações"
+      refreshingText="Atualizando...">
+    </ion-refresher-content>
+  </ion-refresher>
+  
+  <p id="label-publication-notfound" margin-top *ngIf="!loadingNotifications && !notifications.length">Nenhuma notificação foi encontrada</p>
+
+  <ion-list no-padding id="notifications">
+    <div *ngFor="let notification of notifications">
+      <ion-card *ngIf="notification.action == constant.actionEnum.SYSTEM" no-margin class="system-notification">
+        <ion-item>
+          <ion-avatar item-start>
+            <img src="assets/imgs/logo-brown3.png">
+          </ion-avatar>
+          <h2>Gabriel Morais</h2>
+          <p>Monada Dev.</p>
+        </ion-item>
+        <img *ngIf="notification.data.image" [src]="notification.data.image"/>
+
+        <ion-card-content>
+          <p text-center><b>{{notification.data.title}}</b></p>
+          <p>{{notification.data.description}}</p>
+        </ion-card-content>
+      </ion-card>
+
+      <div *ngIf="notification.action == constant.actionEnum.LIKE && notification.users.length" class="user-action-painel" no-wrap>
+        <ul>
+            <li *ngFor="let user of notification.users; let i = index" class="user-action-btn">
+              <div [style.background-image]="'url('+user.image+')'" class="user-action-image"></div>
+              <span class="user-action-username">{{user.username}}<span class="comma" *ngIf="i < 4 && notification.users.length > 1">,</span></span>
+            </li>
+            <li class="user-action-btn label" *ngIf="notification.users.length == 1">
+              <span class="user-action-username"> curtiu uma de suas publicações.</span>
+            </li>
+            <li class="user-action-btn label" *ngIf="notification.users.length > 1 && !notification.count">
+              <span class="user-action-username"> curtiram uma de suas publicações.</span>
+            </li>
+            <li class="user-action-btn label" *ngIf="notification.users.length > 1 && notification.count" (click)="openLiked(notification.publicationId)">
+              <span class="user-action-username"> e mais {{notification.count}} curtiram uma de suas publicações.</span>
+            </li>
+        </ul>
+      </div>
+
+      <div *ngIf="notification.action == constant.actionEnum.RELATION && notification.users.length" class="user-action-painel" no-wrap>
+        <ul>
+            <li *ngFor="let user of notification.users; let i = index" class="user-action-btn">
+              <div [style.background-image]="'url('+user.image+')'" class="user-action-image"></div>
+              <span class="user-action-username">{{user.username}}<span class="comma" *ngIf="i < 4 && notification.users.length > 1">,</span></span>
+            </li>
+            <li class="user-action-btn label" *ngIf="notification.users.length == 1">
+              <span class="user-action-username"> seguiu você.</span>
+            </li>
+            <li class="user-action-btn label" *ngIf="notification.users.length > 1 && !notification.count">
+              <span class="user-action-username"> seguiram você.</span>
+            </li>
+            <li class="user-action-btn label" *ngIf="notification.users.length > 1 && notification.count" (click)="openFollowers()">
+              <span class="user-action-username">e mais {{notification.count}} usuários seguiram você.</span>
+            </li>
+        </ul>
+      </div>
+    <hr *ngIf="(notification.action == constant.actionEnum.RELATION && notification.users.length) ||
+               (notification.action == constant.actionEnum.LIKE && notification.users.length    ) ||
+               (notification.action == constant.actionEnum.SYSTEM)">
+    </div>
+  </ion-list>
+</ion-content>

@@ -1,0 +1,86 @@
+<ion-header no-border>
+  <ion-navbar transparent>
+    <ion-title></ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content fullscreen padding>
+  <h5 text-center>O aplicativo está em fase inicial, contamos com sua compreensão. Avante às novas alternativas!<b>: )</b></h5>
+  <form [formGroup]="user" (ngSubmit)="register()">
+    <ion-item>
+      <ion-label floating>Nome completo</ion-label>
+      <ion-input type="text" formControlName="name"></ion-input>
+    </ion-item>
+    <div class="form-validation" *ngIf="!user.controls.name.valid && user.controls.name.touched">
+      <p class="error" *ngIf="user.controls.name.errors !== null && user.controls.name.errors.pattern">O nome necessita somente de letras</p>
+      <p class="error" *ngIf="user.controls.name.errors !== null && user.controls.name.errors.maxlength">O nome não pode exceder 40 caracteres</p>
+      <p class="error" *ngIf="user.controls.name.errors !== null && user.controls.name.errors.required">O nome é necessário</p>
+    </div>
+
+    <ion-item>
+      <ion-label floating>Usuário</ion-label>
+      <ion-input type="text" formControlName="username"></ion-input>
+      <ion-icon item-right color="secondary" class="valid" *ngIf="user.controls.username.valid" name="checkmark"></ion-icon>
+      <ion-spinner item-right *ngIf="user.controls.username.pending" class="input-spinner"></ion-spinner>
+    </ion-item>
+    <div class="form-validation" *ngIf="user.controls.username.errors !== null &&!user.controls.username.valid">
+      <p class="error" *ngIf="user.controls.username.errors.checkUsername">Este usuário já está em uso</p>
+      <p class="error" *ngIf="user.controls.username.errors.maxlength">O usuário não pode exceder 20 caracteres</p>
+      <p class="error" *ngIf="user.controls.username.errors.pattern">O usuário aceita somente letras, numeros e _</p>
+    </div>
+    <div class="form-validation" *ngIf="user.controls.username.errors !== null && user.controls.username.touched && !user.controls.username.valid">
+      <p class="error" *ngIf="user.controls.username.errors.required">O usuário é necessário</p>
+    </div>
+
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="email" formControlName="email"></ion-input>
+      <ion-icon item-right color="secondary" class="valid" *ngIf="user.controls.email.valid" name="checkmark"></ion-icon>
+      <ion-spinner item-right *ngIf="user.controls.email.pending" class="input-spinner"></ion-spinner>
+    </ion-item>
+    <div class="form-validation" *ngIf="user.controls.email.errors !== null && !user.controls.email.valid">
+      <p class="error" *ngIf="user.controls.email.errors.maxlength">O email não pode exceder 191 caracteres</p>
+      <p class="error" *ngIf="user.controls.email.errors.checkEmail">Este email já está em uso</p>
+    </div>
+    <div class="form-validation" *ngIf="user.controls.email.errors !== null && user.controls.email.touched && !user.controls.email.valid">
+      <p class="error" *ngIf="user.controls.email.errors.pattern">Digite um email válido</p>
+      <p class="error" *ngIf="user.controls.email.errors.required">O email é necessário</p>
+    </div>
+
+    <ion-item>
+      <ion-label floating>Senha</ion-label>
+      <ion-input type="{{showPass ? 'text' : 'password'}}" clearOnEdit="false" formControlName="password"></ion-input>
+      <!--<button *ngIf="showPass" class="hidePassword" ion-button clear color="brown3" type="button" item-right (click)="showPass = false"> <ion-icon name="ios-eye-off-outline"></ion-icon></button>-->
+      <!--<button *ngIf="!showPass"  class="hidePassword" ion-button clear color="brown3" type="button" item-right (click)="showPass = true"> <ion-icon name="ios-eye-outline"></ion-icon></button>-->
+      <ion-icon name="ios-eye-off-outline" *ngIf="showPass"  class="hidePassword" color="brown3" item-right (click)="showPass = false"></ion-icon>
+      <ion-icon name="ios-eye-outline"     *ngIf="!showPass" class="hidePassword" color="brown3" item-right (click)="showPass = true"></ion-icon>
+    </ion-item>
+    <div class="form-validation" *ngIf="!user.controls.password.valid && user.controls.password.touched">
+      <p class="error" *ngIf="password.controls.password.errors.minlength">A senha precisa no mínimo de 6 caracteres</p>
+      <p class="error" *ngIf="password.controls.password.errors.maxlength">A senha não pode exceder 30 caracteres</p>
+      <p class="error" *ngIf="password.controls.password.errors.required">A atual senha é necessário</p>
+    </div>
+
+    <div [hidden]="!hasInvite">
+      <ion-item>
+        <ion-label floating>Insira-o aqui</ion-label>
+        <ion-input type="text" formControlName="invite"></ion-input>
+        <ion-icon item-right color="secondary" class="valid" *ngIf="user.controls.invite.valid && user.controls.invite.value != ''" name="checkmark"></ion-icon>
+        <ion-spinner item-right *ngIf="user.controls.invite.pending && user.controls.invite.value != ''" class="input-spinner"></ion-spinner>
+      </ion-item>
+      <div class="form-validation" *ngIf="user.controls.invite.errors !== null && !user.controls.invite.valid">
+        <p class="error" *ngIf="user.controls.invite.errors.checkInvite">Convite inválido</p>
+      </div>
+    </div>
+
+    <ion-label id="term">
+      <ion-checkbox (click)="setInvite(hasInvite ? false : true)"></ion-checkbox>
+      Possuo um convite de<b (click)="openExplanation()"> autor (?)</b>
+    </ion-label>
+    <ion-label id="term" *ngIf="constant.plt.is('ios')">
+      <ion-checkbox formControlName="term"></ion-checkbox>
+      Concordo com o <b (click)="helper.openLink('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')">contrato de licença padrão da Apple</b>
+    </ion-label>
+    <button ion-button round outline color="brown3" id="registerBtn" type="submit" [disabled]="!user.valid">Cadastre-me</button>
+  </form>
+</ion-content>
