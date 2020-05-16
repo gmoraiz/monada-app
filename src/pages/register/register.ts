@@ -26,13 +26,14 @@ export class RegisterPage{
       name:     ['', [Validators.required, Validators.maxLength(40)]],
       username: ['', Validators.compose([Validators.required, Validators.maxLength(20), Validators.pattern('[A-z0-9_]*')]), new UserValidator(conn).checkUsername],
       email:    ['', Validators.compose([Validators.required, Validators.maxLength(191), Validators.pattern('^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$')]), new UserValidator(conn).checkEmail],
-      invite:   ['', [], new UserValidator(conn).checkInvite],
+      invite:   ['', []],
       password: ['', [Validators.required,Validators.minLength(6), Validators.maxLength(30)]],
       term:     [false, Validators.pattern('true')]
     });
     if(!constant.plt.is('ios')){
       this.user.controls.term.setValue(true);
     }
+    this.user.controls.invite.setValue(true);
   }
   
   register(){

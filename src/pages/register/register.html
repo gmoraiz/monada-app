@@ -61,22 +61,6 @@
       <p class="error" *ngIf="password.controls.password.errors.required">A atual senha é necessário</p>
     </div>
 
-    <div [hidden]="!hasInvite">
-      <ion-item>
-        <ion-label floating>Insira-o aqui</ion-label>
-        <ion-input type="text" formControlName="invite"></ion-input>
-        <ion-icon item-right color="secondary" class="valid" *ngIf="user.controls.invite.valid && user.controls.invite.value != ''" name="checkmark"></ion-icon>
-        <ion-spinner item-right *ngIf="user.controls.invite.pending && user.controls.invite.value != ''" class="input-spinner"></ion-spinner>
-      </ion-item>
-      <div class="form-validation" *ngIf="user.controls.invite.errors !== null && !user.controls.invite.valid">
-        <p class="error" *ngIf="user.controls.invite.errors.checkInvite">Convite inválido</p>
-      </div>
-    </div>
-
-    <ion-label id="term">
-      <ion-checkbox (click)="setInvite(hasInvite ? false : true)"></ion-checkbox>
-      Possuo um convite de<b (click)="openExplanation()"> autor (?)</b>
-    </ion-label>
     <ion-label id="term" *ngIf="constant.plt.is('ios')">
       <ion-checkbox formControlName="term"></ion-checkbox>
       Concordo com o <b (click)="helper.openLink('https://www.apple.com/legal/internet-services/itunes/dev/stdeula/')">contrato de licença padrão da Apple</b>
