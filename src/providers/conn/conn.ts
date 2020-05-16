@@ -256,8 +256,10 @@ export class ConnProvider {
       let options: FileUploadOptions = {
         fileKey: 'monadaImage',
         headers: { 'Authorization': token },
-        params: data
+        params: data,
+        chunkedMode:false
       }
+      console.log("fileTransfer options", options);
       return fileTransfer.upload(filePath, this.constant.API + uri, options);
     });
   }

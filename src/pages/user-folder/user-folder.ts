@@ -12,6 +12,8 @@ export class UserFolderPage {
   loadingFolders: boolean = true;
   folders: Array<any> = [];
   selectMode:boolean = false;
+  public unregisterBackButtonAction: any;
+
   constructor(public navCtrl: NavController, public params: NavParams, public modal: ModalController,
   public conn: ConnProvider, public storage: StorageProvider, public viewCtrl: ViewController, public platform: Platform){
     this.selectMode = params.get('selectMode') ? true: false;
@@ -19,6 +21,12 @@ export class UserFolderPage {
       this.folders = res.json().data;
       this.setLoadingFolders(false);
     }).catch(err => this.setLoadingFolders(false));
+
+    let backAction =  platform.registerBackButtonAction(() => {
+      console.log("BackButton UserFolderPage");
+      this.dismiss();
+      backAction();
+    }, 2);
   }
 
   open(folder: any){
@@ -36,9 +44,9 @@ export class UserFolderPage {
 
   dismiss(folder: any = null){
     if(this.selectMode){
-      this.viewCtrl.dismiss({folder: folder});
+      this.viewCtrl.dismiss({folder: folder}).catch(() => {});
     }else{
-      this.viewCtrl.dismiss({folders: this.folders});
+      this.viewCtrl.dismiss({folders: this.folders}).catch(() => {});
     }
   }
 
@@ -54,10 +62,6 @@ export class UserFolderPage {
 
   private setLoadingFolders(x:boolean = true){
     this.loadingFolders = x;
-  }
-
-  ionViewWillUnload(){
-    this.dismiss();
   }
 
 }

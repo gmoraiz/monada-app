@@ -15,6 +15,10 @@ page-login {
         transform: translate(0px, -50%);
         top: 50%;
     }
+    // ion-grid{
+    //     height: 100vh;
+    //     justify-content: center;
+    // }
     ion-item{
         background-color:transparent!important;
         padding-left:0px!important;
@@ -35,5 +39,18 @@ page-login {
         width: 100%!important;
         margin: 0 auto!important;
     }
+
+    #version-login{
+        text-align:center;
+        width:100%;
+        color:$brown2;
+        b{
+            img{
+                vertical-align: middle;
+                width:15px;
+                height:15px;
+            }
+        }
+}
     
 }

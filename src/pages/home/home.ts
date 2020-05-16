@@ -1,5 +1,5 @@
 import { Component, ViewChild, NgZone } from '@angular/core';
-import { IonicPage, NavController, Refresher, ToastController, PopoverController, ModalController, App, Platform, Events, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, Refresher, ToastController, PopoverController, ModalController, App, Platform, Events, ViewController, Content } from 'ionic-angular';
 import { ConnProvider } from '../../providers/conn/conn';
 import { ConstantProvider } from '../../providers/constant/constant';
 import { StorageProvider } from '../../providers/storage/storage';
@@ -16,6 +16,7 @@ import { Subscription } from 'rxjs/Subscription';
 })
 export class HomePage {
   @ViewChild('finalAuthorsScrollbarX') finalAuthorsScrollbarX: any;
+  @ViewChild('pageTop') pageTop: Content;
   @ViewChild(Refresher) refresher: Refresher;
   private onResumeSubscription: Subscription;
   
@@ -136,6 +137,7 @@ export class HomePage {
   }
 
   showPublications(authorId, authorUsername){
+    this.setLoadingPublications(false);
     this.setSelectedAuthor(authorId);
     if(authorId !== this.actualAuthor.id){
       this.setActualAuthorUsername(authorUsername);

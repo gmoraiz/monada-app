@@ -24,9 +24,10 @@
         <p class="publication-description" *ngIf="publication.description"  (click)="openPublication(publication)">{{!opened ? (publication.description | truncate : 800 : "...") : publication.description}}<span class="btn-truncate" [hidden]="publication.description.length <= 800 || opened">[mais]</span></p>
       </ion-card-content>
       
-      <ion-slides *ngIf="publication.images.length" autoplay="3000" speed="1500" loop="true" pager="true">
+      <ion-slides *ngIf="publication.images.length" [pager]="publication.images.length > 1" paginationType="fraction">
         <ion-slide *ngFor="let image of publication.images" (click)="helper.openPhoto(image.name)" class="publication-slide">
-          <img [src]="image.name"/>
+          <div class="publication-slide-image" [style.background-image]="'url('+image.name+')'">
+          </div>
         </ion-slide>
       </ion-slides>
 

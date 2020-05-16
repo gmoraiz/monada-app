@@ -73,7 +73,7 @@ export class ProfileComponent{
           }
           this.events.publish('authors/changeSearchByProfile', {action: 'unfollow', userId: this.user.userId});
           this.events.publish('home/resetAllPublications', {userId: this.user.userId});
-        }).catch(err => this.user.saveAction = false);
+        }).catch(err => this.user.followAction = false);
       }else{
         this.conn.follow({users: [this.user.userId]}).then(res => {
           if(res.json().data){

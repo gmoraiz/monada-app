@@ -12,7 +12,10 @@
     </ion-refresher-content>
   </ion-refresher>
 
-  <ion-spinner margin-top *ngIf="loadingAuthors" class="center-spinner" color="brown3"></ion-spinner>
+  <!-- <ion-spinner margin-top *ngIf="loadingAuthors" class="center-spinner" color="brown3"></ion-spinner> -->
+  <div class="loading-spinner-centered" *ngIf="loadingAuthors">
+      <ion-spinner></ion-spinner>
+  </div>
   
   <ion-list *ngIf="!loadingAuthors">
     <ion-list-header>

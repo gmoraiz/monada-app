@@ -44,10 +44,12 @@ export class SearchPage {
   offsetSearch: number = 0;
   offsetHightlights: number = 0;
   actualSegment: string = "highlights";
+  categories:Array<any> = [];
 
   constructor(public nav: NavController, public navParams: NavParams,
   public conn:ConnProvider, public constant: ConstantProvider, public storage: StorageProvider,
   public toast: ToastController, public socialSharing: SocialSharing){
+    this.storage.getCategories().then(categories => this.categories = categories);
     this.conn.highlights().then(res => {
       if(this.actualSegment == "highlights"){
         this.publications = res.json().data;
@@ -58,6 +60,12 @@ export class SearchPage {
       this.highlightsData = res.json().data;
       this.setLoadingPublications(false);
     }).catch(err => this.setLoadingPublications(false));
+    this.conn.categories().then(res =>{
+      this.categories = res.json().data;
+      this.storage.setCategories(this.categories);
+    }).catch(err => {
+      console.log("Error in categories load", err);
+    });
   }
 
   search(){

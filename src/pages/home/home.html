@@ -8,14 +8,8 @@
   </ion-header>
   <ion-content>
     <ion-grid>
-      <!-- <ion-row *ngIf="constant.plt.is('ios')">
-        <button menuClose ion-button round outline color="brown3" (click)="helper.openLink('https://patreon.com/user?u=13626733')">Patreon</button>
-      </ion-row> -->
-      <!-- <ion-row>
-        <button menuClose ion-button round outline color="brown3" (click)="helper.openLink(constant.URL + 'doacao')">Doação com PayPal</button>
-      </ion-row> -->
       <ion-row *ngIf="!constant.plt.is('ios')">
-        <button menuClose ion-button round outline color="brown3" (click)="helper.openLink(constant.URL + 'doacao')">Contribua</button>
+        <button menuClose ion-button round outline color="brown3" (click)="helper.openLink(constant.URL + 'desenvolvedor')">Contribua</button>
       </ion-row>
       <ion-row>
         <button menuClose ion-button round outline color="brown3" (click)="openContact()">Contate-nos</button>
@@ -47,16 +41,12 @@
     <button ion-button menuToggle icon-only>
       <ion-icon name='menu'></ion-icon>
     </button>
-    <ion-title> {{actualAuthor.username == 'all' ? 'Todas as publicações' : actualAuthor.username}}</ion-title>
-    <!--<ion-buttons end>
-      <button ion-button icon-only (click)="openSearch()">
-        <ion-icon name="search"></ion-icon>
-      </button>
-    </ion-buttons>-->
+    <ion-title (click)="pageTop.scrollToTop()"> {{actualAuthor.username == 'all' ? 'Todas as publicações' : actualAuthor.username}}</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content>
+
+<ion-content #pageTop>
 
   <ion-refresher (ionRefresh)="doRefresh($event)" [enabled]="!loadingPublications">
     <ion-refresher-content
@@ -101,7 +91,11 @@
 
   <p id="label-publication-notfound" margin-top *ngIf="!loadingPublications && !publications.length">Nenhuma publicação foi encontrada</p>
 
-  <ion-spinner margin-top *ngIf="loadingPublications" class="center-spinner"></ion-spinner>
+  <!-- <ion-spinner margin-top *ngIf="loadingPublications" class="center-spinner"></ion-spinner> -->
+  <div class="loading-spinner-centered" *ngIf="loadingPublications">
+      <ion-spinner></ion-spinner>
+  </div>
+
   <div *ngIf="!loadingPublications">
     <publication *ngFor="let publication of publications" [publication]="publication"></publication>
   </div>

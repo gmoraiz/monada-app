@@ -28,12 +28,7 @@
         <ion-item>
           <ion-label class="correct-label">Categorias</ion-label>
           <ion-select [(ngModel)]="filter.category" multiple="true" okText="Confirmar" cancelText="Cancelar">
-            <ion-option value="1">Bacon</ion-option>
-            <ion-option value="2">Black Olives</ion-option>
-            <ion-option value="3">Extra Cheese</ion-option>
-            <ion-option value="4">Mushrooms</ion-option>
-            <ion-option value="5">Pepperoni</ion-option>
-            <ion-option value="6">Sausage</ion-option>
+            <ion-option *ngFor="let category of categories" [value]="category.id">{{category.name}}</ion-option>
           </ion-select>
         </ion-item>
       </ion-row>
@@ -71,7 +66,10 @@
   </div>
   <p id="label-publication-notfound" margin-top *ngIf="!loadingPublications && !publications.length">Nenhuma publicação foi encontrada</p>
 
-  <ion-spinner margin-top *ngIf="loadingPublications" class="center-spinner" color="brown3"></ion-spinner>
+  <!-- <ion-spinner margin-top *ngIf="loadingPublications" class="center-spinner" color="brown3"></ion-spinner> -->
+  <div class="loading-spinner-centered" *ngIf="loadingPublications">
+      <ion-spinner></ion-spinner>
+  </div>
   
   <div *ngIf="!loadingPublications">
     <publication *ngFor="let publication of publications" [publication]="publication"></publication>

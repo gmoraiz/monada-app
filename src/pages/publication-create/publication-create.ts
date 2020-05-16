@@ -39,6 +39,7 @@ export class PublicationCreatePage {
   searchLink:string = "";
   linkOpen:boolean = false;
   searchingLink:boolean = false;
+  action:string = null;
   publication: any = {
     title: "",
     description: "",
@@ -55,9 +56,11 @@ export class PublicationCreatePage {
   public camera: Camera, public plt: Platform, public conn: ConnProvider, public alert: AlertController,
   public actionSheet: ActionSheetController, public load: LoadProvider, public viewCtrl: ViewController,
   public helper: HelperProvider, public popover: PopoverController, public imagePicker: ImagePicker,
-  public events: Events){
+  public events: Events, public platform: Platform){
+    this.storage.getCategories().then(categories => this.categories = categories);
     this.conn.categories().then(res =>{
       this.categories = res.json().data;
+      this.storage.setCategories(this.categories);
     }).catch(err => {
       console.log("Error in categories load", err);
     });
@@ -65,6 +68,11 @@ export class PublicationCreatePage {
       this.editMode = true;
       this.buildPublicationToEdit();
     }
+    let backAction =  platform.registerBackButtonAction(() => {
+      console.log("BackButton PublicationCreatePage");
+      this.dismiss();
+      backAction();
+    }, 2);
   }
 
   ionViewDidLoad(){
@@ -130,6 +138,7 @@ export class PublicationCreatePage {
     this.conn.updatePublication(this.serialize()).then(res => {
       this.load.dismiss();
       if(res.json().data){
+        this.action = 'edit';
         this.toast.create({message: "Publicação atualizada com sucesso", duration: 3000, position: 'bottom'}).present();
       }else{
         this.toast.create({message: res.json().msg, duration: 3000, position: 'bottom'}).present();
@@ -407,8 +416,8 @@ export class PublicationCreatePage {
     this.publication.categories = this.publication.categories.filter(x => x !== category);
   }
 
-  dismiss(action: string = null){
-    this.viewCtrl.dismiss({publication: this.publication, action: action});
+  dismiss(){
+    this.viewCtrl.dismiss({publication: this.publication, action: this.action});
   }
 
   delete(){
@@ -426,7 +435,8 @@ export class PublicationCreatePage {
           this.toast.create({message: res.json().msg, duration: 3000, position: 'bottom'}).present();
           if(res.json().data){
             this.events.publish('UserPage/publication/delete', this.publication.id);
-            this.dismiss("delete");
+            this.action = 'delete';
+            this.dismiss();
           }else{
             this.dismiss();
           }
@@ -568,7 +578,8 @@ export class PublicationCreatePage {
       text:'Encerrar',
       handler: data => {
         this.success();
-        this.dismiss('create');
+        this.action = 'create';
+        this.dismiss();
       }
     });
     alert.addButton({
@@ -587,7 +598,8 @@ export class PublicationCreatePage {
         }else{
            this.success();
         }
-        this.dismiss('create');
+        this.action = 'create';
+        this.dismiss();
         console.log(data);
       }
     });

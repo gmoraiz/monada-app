@@ -59,6 +59,7 @@ export class PopoverOptionsPublicationPage {
       this.load.dismiss();
       if(res.json().data){
         this.publication = res.json().data;
+        let publicationRefreshed = Object.assign({}, this.publication);
         let modal = this.modal.create('PublicationCreatePage', {publication: this.publication, editMode: true});
         modal.present();
         modal.onDidDismiss(data => {
@@ -71,11 +72,14 @@ export class PopoverOptionsPublicationPage {
               case 'edit':
                 console.log("Publication edited", data);
                 this.publication = data.publication;
+                this.dismiss('edit');
                 break;
               default:
+                this.publication = publicationRefreshed;
                 this.dismiss('refresh');
             }
           }else{
+            this.publication = publicationRefreshed;
             this.dismiss('refresh');
           }
         });

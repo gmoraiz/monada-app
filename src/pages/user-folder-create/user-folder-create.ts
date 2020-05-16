@@ -26,7 +26,7 @@ export class UserFolderCreatePage{
   constructor(public viewCtrl: ViewController, public params: NavParams, public actionSheet: ActionSheetController,
   public camera: Camera, public constant: ConstantProvider, public toast: ToastController, public conn: ConnProvider,
   public plt: Platform, public helper: HelperProvider, public load: LoadProvider, private formBuilder: FormBuilder,
-  public modal: ModalController, public alert: AlertController){
+  public modal: ModalController, public alert: AlertController, public platform: Platform){
     this.folderForm = this.formBuilder.group({
       name:     ['', [Validators.required, Validators.maxLength(40)]]
     });
@@ -36,6 +36,12 @@ export class UserFolderCreatePage{
       this.folderForm.controls.name.setValue(this.folder.name);
       this.photo = this.folder.image;
     }
+
+    let backAction =  platform.registerBackButtonAction(() => {
+      console.log("BackButton UserFolderCreate");
+      this.dismiss();
+      backAction();
+    }, 2);
   }
 
   store(){

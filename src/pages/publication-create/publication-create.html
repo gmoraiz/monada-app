@@ -53,8 +53,8 @@
                [attr.col-3]  = "publication.images.length == 4 ? '' : null"
                [attr.col]    = "publication.images.length == 5 ? '' : null"
                *ngFor="let image of publication.images">
-        <div [style.background-image]="'url('+(image.name || image.nameToUpload)+')'" (tap)="helper.openPhoto(image.name || image.nameToUpload)">
-          <button ion-button *ngIf="image.success == undefined" (tap)="removeImage(image)" color="brown3">
+        <div [style.background-image]="'url('+(image.name || image.nameToUpload)+')'" (click)="helper.openPhoto(image.name || image.nameToUpload)">
+          <button ion-button *ngIf="image.success == undefined" (click)="removeImage(image);$event.stopPropagation()" color="brown3">
             <ion-icon item-right name="trash"></ion-icon>
           </button>
           <button ion-button *ngIf="image.success === true" color="secondary">

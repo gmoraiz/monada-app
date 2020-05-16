@@ -30,6 +30,14 @@ export class StorageProvider {
     return this.storage.get('token').then(token => token).catch(err => err);
   }
 
+  setCategories(categories: Array<any>): void{
+    this.storage.set('categories', categories);
+  }
+  
+  getCategories(): Promise<Array<any>>{
+    return this.storage.get('categories').then(categories => categories ? categories : []).catch(err => err);
+  }
+
   setUser(user: object): void{
     this.storage.set('user', JSON.stringify(user));
   }

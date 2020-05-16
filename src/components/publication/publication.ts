@@ -35,7 +35,6 @@ export class PublicationComponent{
             publication.likes--;
           }else{
             publication.liked = false;
-            publication.likes--;
             this.toast.create({message: res.json().msg, duration: 3000, position: 'bottom'}).present();
           }
         }).catch(err => publication.likeAction = false);
@@ -47,7 +46,6 @@ export class PublicationComponent{
             publication.likes++;
           }else{
             publication.liked = true;
-            publication.likes++;
             this.toast.create({message: res.json().msg, duration: 3000, position: 'bottom'}).present();
           }
         }).catch(err => publication.likeAction = false);
