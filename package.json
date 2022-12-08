@@ -47,7 +47,7 @@
     "@ngx-translate/http-loader": "^3.0.1",
     "com-sarriaroman-photoviewer": "^1.1.18",
     "cordova-android": "7.1.1",
-    "cordova-browser": "5.0.4",
+    "cordova-browser": "6.0.0",
     "cordova-clipboard": "^1.2.1",
     "cordova-plugin-app-version": "^0.1.9",
     "cordova-plugin-appavailability": "git+https://github.com/ohh2ahh/AppAvailability.git",
